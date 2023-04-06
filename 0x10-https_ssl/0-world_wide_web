@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Usage: ./1-world_wide_web <domain> <subdomain>
+# Display information about subdomains
+
+function get_record {
+  local domain=$1
+  local subdomain=$2
+  local record_type=$3
+  local record=$(dig +short $subdomain.$domain $record_type)
+  if [[ -n "$record" ]]; then
+    echo "The subdomain $subdomain is a $record_type record and points to $record"
+  fi
+}
+
+if [[ $# -eq 1 ]]; then
+  domain=$1
+  subdomains=(www lb-01 web-01 web-02)
+else
+  domain=$1
+  subdomains=($2)
+fi
+
+for subdomain in "${subdomains[@]}"; do
+  case "$subdomain" in
+    "www") get_record $domain "www" "A" ;;
+    "lb-01") get_record $domain "lb-01" "A" ;;
+    "web-01") get_record $domain "web-01" "A" ;;
+    "web-02") get_record $domain "web-02" "A" ;;
+    *) echo "Unknown subdomain: $subdomain" ;;
+  esac
+done
