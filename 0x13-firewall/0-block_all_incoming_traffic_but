@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Configures a ufw firewall to block all incoming traffic
+#+ except for TCP ports 22, 443 and 80.
+
+sudo apt-get update
+sudo apt-get install ufw
+sudo ufw disable
+sudo ufw default deny incoming
+sudo ufw allow ssh
+sudo ufw allow https
+sudo ufw allow http
+sudo ufw enable
+sudo ufw status
