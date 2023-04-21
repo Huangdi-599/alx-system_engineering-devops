@@ -1,0 +1,16 @@
+#!/bin/bash
+# Fixes a web server to run Nginx as the nginx user listening on port 8080.
+# Install Nginx
+apt-get update
+apt-get install -y nginx
+
+# Stop Nginx if it is already running
+systemctl stop nginx.service
+
+# Modify Nginx configuration to run as nginx user and listen on port 8080
+sed -i -e 's/^user www-data/user nginx/' /etc/nginx/nginx.conf
+sed -i -e 's/^listen\(.*\)80;/listen\1 8080;/' /etc/nginx/sites-available/default
+chmod 644 /etc/nginx/nginx.conf
+pkill apache2
+#Start Nginx
+sudo -u nginx service nginx start

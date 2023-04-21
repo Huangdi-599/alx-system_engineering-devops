@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Check if a username was provided
+if [[ -z "$1" ]]; then
+  echo "Please provide a username as an argument."
+  exit 1
+fi
+
+# Switch to the specified user and run the `whoami` command
+su - "$1" -c "whoami"
