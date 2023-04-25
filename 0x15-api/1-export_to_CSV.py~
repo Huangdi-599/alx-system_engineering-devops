@@ -1,0 +1,23 @@
+#!/usr/bin/python3
+# """Returns to-do list information for a given employee ID."""
+import csv
+import requests
+import sys
+
+if __name__ == "__main__":
+    url = "https://jsonplaceholder.typicode.com/"
+    employers = requests.get(url + "users/{}".format(sys.argv[1])).json()
+    tasks = requests.get(url + "todos", params={"userId": sys.argv[1]}).json()
+
+    completed = [task.get("title") for task in tasks if task.get("completed") is True]
+
+    with open('{}.csv'.format(sys.argv[1]), mode='w') as csv_file:
+        fieldnames = ['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        for task in tasks:
+            writer.writerow({'USER_ID': employers.get("id"),
+                             'USERNAME': employers.get("username"),
+                             'TASK_COMPLETED_STATUS': task.get("completed"),
+                             'TASK_TITLE': task.get("title")})
+            
