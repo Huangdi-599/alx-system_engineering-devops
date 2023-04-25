@@ -8,7 +8,7 @@ if __name__ == "__main__":
     employers = requests.get(url + "users/{}".format(sys.argv[1])).json()
     tasks = requests.get(url + "todos", params={"userId": sys.argv[1]}).json()
 
-    completed = [task.get("title") 
+    completed = [task.get("title")
                  for task in tasks if task.get("completed") is True]
     print("Employee {} is done with tasks({}/{}):".format(
         employers.get("name"), len(completed), len(tasks)))
