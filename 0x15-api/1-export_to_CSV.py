@@ -8,15 +8,13 @@ if __name__ == "__main__":
     url = "https://jsonplaceholder.typicode.com/"
     employers = requests.get(url + "users/{}".format(sys.argv[1])).json()
     tasks = requests.get(url + "todos", params={"userId": sys.argv[1]}).json()
-
-    completed = [task.get("title") for task in tasks if task.get("completed") is True]
+    user_id = sys.argv[1]
+    username = employers.get("username")
+    completed = [task.get("title") 
+                 for task in tasks if task.get("completed") is True]
 
     with open('{}.csv'.format(sys.argv[1]), mode='w', newline="") as csv_file:
-        fieldnames = ['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE']
-        writer = csv.DictWriter(csv_file,quoting=csv.QUOTE_ALL, fieldnames=fieldnames)
-        writer.writeheader()
-        for task in tasks:
-            writer.writerow({'USER_ID': employers.get("id"),
-                             'USERNAME': employers.get("username"),
-                             'TASK_COMPLETED_STATUS': task.get("completed"),
-                             'TASK_TITLE': task.get("title")})
+        writer = csv.writer(csv_file,quoting=csv.QUOTE_ALL)
+        [writer.writerow(
+            [user_id, username, t.get("completed"), t.get("title")])
+         for t in tasks]

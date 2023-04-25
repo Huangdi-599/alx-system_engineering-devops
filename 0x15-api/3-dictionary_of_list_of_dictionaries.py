@@ -9,7 +9,7 @@ if __name__ == "__main__":
 
     all_tasks = {}
     for user in users:
-        tasks = requests.get(url + "todos", 
+        tasks = requests.get(url + "todos",
                              params={"userId": user.get("id")}).json()
         user_tasks = []
         for task in tasks:
