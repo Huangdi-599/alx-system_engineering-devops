@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# """Returns to-do list information for all employees."""
+"""Returns to-do list information for all employees."""
 import json
 import requests
 
